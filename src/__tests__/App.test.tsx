@@ -1,5 +1,5 @@
 import '@testing-library/jest-dom'
-import { render, screen, waitFor } from '@testing-library/react'
+import { render, screen, waitFor, act } from '@testing-library/react'
 import App from '../App'
 import type { VehiclePosition } from '../services/hslApi'
 
@@ -26,38 +26,31 @@ test('renders loading state initially', () => {
 })
 
 test('displays data after connection', async () => {
-  render(<App />)
+  const { unmount } = render(<App />);
   
-  // First, verify the loading state
-  expect(screen.getByRole('heading', { name: /HSL Real-Time Tracker/i })).toBeInTheDocument()
-  expect(screen.getByText('Tracking vehicles in real-time...')).toBeInTheDocument()
-  expect(screen.getByRole('status')).toBeInTheDocument()
+  await act(async () => {
+    // Simulate receiving vehicle data
+    if (mockCallback) {
+      mockCallback({
+        id: '12345',
+        route: '550',
+        direction: 1,
+        lat: 60.1699,
+        long: 24.9384,
+        speed: 8.5,
+        vehicleType: 'bus',
+        timestamp: Date.now(),
+        operator: '12'
+      });
+    }
+  });
 
-  // Simulate receiving vehicle data
-  if (mockCallback) {
-    mockCallback({
-      id: '12345',
-      route: '550',
-      direction: 1,
-      lat: 60.1699,
-      long: 24.9384,
-      speed: 8.5,
-      vehicleType: 'bus',
-      timestamp: Date.now(),
-      operator: '12'
-    })
-  }
-
-  // Wait for the loading state to be removed and components to be rendered
   await waitFor(() => {
-    expect(screen.queryByText('Tracking vehicles in real-time...')).not.toBeInTheDocument()
-  })
+    expect(screen.queryByText('Tracking vehicles in real-time...')).not.toBeInTheDocument();
+    expect(screen.getByTestId('map-container')).toBeInTheDocument();
+    expect(screen.getByRole('table')).toBeInTheDocument();
+  });
 
-  expect(screen.getByTestId('map-container')).toBeInTheDocument()
-  expect(screen.getByRole('table')).toBeInTheDocument()
-
-  // Verify cleanup is called on unmount
-  const { unmount } = render(<App />)
-  unmount()
-  expect(mockCleanup).toHaveBeenCalled()
+  unmount();
+  expect(mockCleanup).toHaveBeenCalled();
 }) 
