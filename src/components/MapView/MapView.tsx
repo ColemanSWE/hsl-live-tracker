@@ -28,7 +28,6 @@ export default function MapView({ vehicles }: { vehicles: VehiclePosition[] }) {
   }, []);
 
   useEffect(() => {
-    // Update markers when vehicles change
     if (!mapRef.current) return;
 
     markerLayerRef.current.clearLayers();
@@ -42,13 +41,6 @@ export default function MapView({ vehicles }: { vehicles: VehiclePosition[] }) {
     });
 
     markerLayerRef.current.addTo(mapRef.current);
-
-    // Correct bounds calculation
-    const markers = markerLayerRef.current.getLayers() as L.Marker[];
-    if (markers.length > 0) {
-      const bounds = L.latLngBounds(markers.map(m => m.getLatLng()));
-      mapRef.current.fitBounds(bounds, { padding: [50, 50] });
-    }
   }, [vehicles]);
 
   return <div id="map" style={{ height: '600px', width: '100%' }} />
