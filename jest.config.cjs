@@ -5,16 +5,24 @@ module.exports = {
   testEnvironment: 'jest-environment-jsdom',
   setupFilesAfterEnv: ['<rootDir>/src/setupTests.ts'],
   moduleNameMapper: {
-    '\\.(css|scss)$': '<rootDir>/__mocks__/styleMock.js',
+    '\\.(css|scss)$': 'identity-obj-proxy',
     '^@/(.*)$': '<rootDir>/src/$1'
   },
   transform: {
-    '^.+\\.tsx?$': 'ts-jest'
-  },
-  testPathIgnorePatterns: ['/node_modules/', '/dist/'],
-  globals: {
-    'ts-jest': {
+    '^.+\\.(ts|tsx)$': ['ts-jest', {
+      useESM: true,
       tsconfig: 'tsconfig.json'
-    }
-  }
+    }]
+  },
+  transformIgnorePatterns: [
+    'node_modules/(?!(mqtt)/)'
+  ],
+  testEnvironmentOptions: {
+    customExportConditions: ['node', 'node-addons']
+  },
+  moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
+  testMatch: [
+    '**/__tests__/**/*.test.(ts|tsx)',
+    '**/?(*.)+(spec|test).(ts|tsx)'
+  ]
 } 
