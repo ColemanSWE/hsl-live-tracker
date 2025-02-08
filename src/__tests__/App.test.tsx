@@ -1,59 +1,63 @@
 import '@testing-library/jest-dom'
-import { render, screen, waitFor, act } from '@testing-library/react'
+import { render, screen, waitFor } from '@testing-library/react'
 import App from '../App'
+import type { VehiclePosition } from '../services/hslApi'
 
-type MessageHandler = (topic: string, message: Buffer) => void
-let mockMessageHandler: MessageHandler | null = null
+let mockCleanup: jest.Mock
+let mockCallback: ((data: VehiclePosition) => void) | null = null
 
-jest.mock('mqtt', () => ({
-  __esModule: true,
-  default: {
-    connect: jest.fn(() => ({
-      on: jest.fn((event: string, cb: MessageHandler) => {
-        if (event === 'message') mockMessageHandler = cb
-      }),
-      subscribe: jest.fn(),
-      end: jest.fn()
-    }))
-  }
+jest.mock('../services/hslApi', () => ({
+  initRealtimeConnection: jest.fn((callback: (data: VehiclePosition) => void) => {
+    mockCallback = callback
+    return mockCleanup = jest.fn()
+  })
 }))
+
+beforeEach(() => {
+  jest.clearAllMocks()
+  mockCallback = null
+})
 
 test('renders loading state initially', () => {
   render(<App />)
   expect(screen.getByRole('heading', { name: /HSL Real-Time Tracker/i })).toBeInTheDocument()
+  expect(screen.getByText('Tracking vehicles in real-time...')).toBeInTheDocument()
+  expect(screen.getByRole('status')).toBeInTheDocument()
 })
 
 test('displays data after connection', async () => {
   render(<App />)
   
-  // Simulate successful connection
-  await waitFor(() => {
-    expect(mockMessageHandler).toBeTruthy()
-  }, { timeout: 1000 })
+  // First, verify the loading state
+  expect(screen.getByRole('heading', { name: /HSL Real-Time Tracker/i })).toBeInTheDocument()
+  expect(screen.getByText('Tracking vehicles in real-time...')).toBeInTheDocument()
+  expect(screen.getByRole('status')).toBeInTheDocument()
 
-  // Create valid test data matching your VehiclePosition interface
-  const mockData = JSON.stringify({
-    id: '12345',
-    route: '550',
-    lat: 60.1699,
-    long: 24.9384,
-    speed: 8.5,
-    vehicleType: 'bus',
-    timestamp: Date.now()
+  // Simulate receiving vehicle data
+  if (mockCallback) {
+    mockCallback({
+      id: '12345',
+      route: '550',
+      direction: 1,
+      lat: 60.1699,
+      long: 24.9384,
+      speed: 8.5,
+      vehicleType: 'bus',
+      timestamp: Date.now(),
+      operator: '12'
+    })
+  }
+
+  // Wait for the loading state to be removed and components to be rendered
+  await waitFor(() => {
+    expect(screen.queryByText('Tracking vehicles in real-time...')).not.toBeInTheDocument()
   })
 
-  // Update state in act block
-  act(() => {
-    mockMessageHandler?.(
-      'hfp/v2/journey/ongoing/vp/bus/+/+/550/+/#',
-      Buffer.from(mockData)
-    )
-  })
+  expect(screen.getByTestId('map-container')).toBeInTheDocument()
+  expect(screen.getByRole('table')).toBeInTheDocument()
 
-  // Wait for UI updates
-  await waitFor(() => {
-    expect(screen.queryByText(/loading/i)).not.toBeInTheDocument()
-    expect(screen.getByTestId('map-container')).toBeInTheDocument()
-    expect(screen.getByRole('table')).toBeInTheDocument()
-  }, { timeout: 5000 })
+  // Verify cleanup is called on unmount
+  const { unmount } = render(<App />)
+  unmount()
+  expect(mockCleanup).toHaveBeenCalled()
 }) 
