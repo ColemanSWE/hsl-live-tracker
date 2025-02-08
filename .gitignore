@@ -22,3 +22,24 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Environment files
+.env
+.env.*
+
+# Build files
+.cache
+.parcel-cache
+.sass-cache
+
+# Testing
+coverage/
+*.lcov
+jest-test-results.json
+
+# Editor
+.idea/
+
+# Temporary files
+*.tmp
+*.bak

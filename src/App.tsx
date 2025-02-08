@@ -1,34 +1,61 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useState, useEffect } from 'react'
+import { initRealtimeConnection, VehiclePosition } from './services/hslApi'
+import MapView from './components/MapView/MapView'
+import DataTable from './components/DataTable/DataTable'
+import SearchFilters from './components/SearchFilters/SearchFilters'
+import Loader from './components/Loader/Loader'
+import styles from './App.module.scss'
+import './App.module.scss'
+import ErrorBoundary from './components/ErrorBoundary'
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [vehicles, setVehicles] = useState<VehiclePosition[]>([])
+  const [loading, setLoading] = useState(true)
+  const [filters, setFilters] = useState({
+    routeFilter: '',
+    vehicleType: 'all'
+  })
+
+  useEffect(() => {
+    const cleanup = initRealtimeConnection(vehicle => {
+      setVehicles(prev => {
+        const existing = prev.find(v => v.id === vehicle.id)
+        return existing ? prev.map(v => v.id === vehicle.id ? vehicle : v) : [...prev, vehicle]
+      })
+      setLoading(false)
+    })
+
+    return () => {
+      cleanup();
+    }
+  }, [])
+
+  const filteredVehicles = vehicles.filter(vehicle => {
+    const matchesRoute = vehicle.route.toLowerCase().includes(filters.routeFilter.toLowerCase())
+    const matchesType = filters.vehicleType === 'all' || vehicle.vehicleType === filters.vehicleType
+    return matchesRoute && matchesType
+  })
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+    <ErrorBoundary>
+      <div className={styles.appContainer}>
+        <h1>HSL Real-Time Tracker</h1>
+        <SearchFilters filters={filters} onFilterChange={setFilters} />
+        
+        {loading ? (
+          <Loader />
+        ) : (
+          <div className={styles.contentWrapper}>
+            <div className={styles.mapContainer}>
+              <MapView vehicles={filteredVehicles} />
+            </div>
+            <div className={styles.tableContainer}>
+              <DataTable vehicles={filteredVehicles} />
+            </div>
+          </div>
+        )}
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
+    </ErrorBoundary>
   )
 }
 
