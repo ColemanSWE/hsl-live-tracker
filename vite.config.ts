@@ -9,5 +9,6 @@ export default defineConfig({
     modules: {
       localsConvention: 'camelCase'
     }
-  }
+  },
+  base: '/hsl-live-tracker/'
 })

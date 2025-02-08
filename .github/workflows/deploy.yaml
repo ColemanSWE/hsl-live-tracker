@@ -18,6 +18,9 @@ jobs:
   deploy:
     needs: test
     runs-on: ubuntu-latest
+    environment: production
+    permissions:
+      contents: write
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -30,3 +33,4 @@ jobs:
         with:
           branch: gh-pages
           folder: dist
+          target-folder: .
