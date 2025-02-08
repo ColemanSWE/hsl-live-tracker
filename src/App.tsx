@@ -6,7 +6,6 @@ import SearchFilters from './components/SearchFilters/SearchFilters'
 import Loader from './components/Loader/Loader'
 import styles from './App.module.scss'
 import './App.module.scss'
-import ErrorBoundary from './components/ErrorBoundary'
 
 function App() {
   const [vehicles, setVehicles] = useState<VehiclePosition[]>([])
@@ -37,7 +36,6 @@ function App() {
   })
 
   return (
-    <ErrorBoundary>
       <div className={styles.appContainer}>
         <h1>HSL Real-Time Tracker</h1>
         <SearchFilters filters={filters} onFilterChange={setFilters} />
@@ -55,7 +53,6 @@ function App() {
           </div>
         )}
       </div>
-    </ErrorBoundary>
   )
 }
 
