@@ -9,14 +9,16 @@ module.exports = {
     '^@/(.*)$': '<rootDir>/src/$1'
   },
   transform: {
-    '^.+\\.(ts|tsx)$': ['ts-jest', {
-      tsconfig: 'tsconfig.json',
-      useESM: true
+    '^.+\\.(ts|tsx|js|jsx)$': ['ts-jest', {
+      useESM: true,
+      tsconfig: 'tsconfig.json'
     }]
   },
   transformIgnorePatterns: [
-    '/node_modules/(?!mqtt)'
+    'node_modules/(?!(mqtt)/)'
   ],
-  testPathIgnorePatterns: ['/node_modules/', '/dist/'],
-  extensionsToTreatAsEsm: ['.ts', '.tsx']
+  testEnvironmentOptions: {
+    customExportConditions: ['node', 'node-addons']
+  },
+  moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node']
 } 
