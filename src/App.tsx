@@ -5,7 +5,6 @@ import DataTable from './components/DataTable/DataTable'
 import SearchFilters from './components/SearchFilters/SearchFilters'
 import Loader from './components/Loader/Loader'
 import styles from './App.module.scss'
-import './App.module.scss'
 
 function App() {
   const [vehicles, setVehicles] = useState<VehiclePosition[]>([])
@@ -44,7 +43,7 @@ function App() {
           <Loader />
         ) : (
           <div className={styles.contentWrapper}>
-            <div className={styles.mapContainer}>
+            <div className={styles.mapContainer} data-testid="map-container">
               <MapView vehicles={filteredVehicles} />
             </div>
             <div className={styles.tableContainer}>

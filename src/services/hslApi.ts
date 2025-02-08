@@ -10,7 +10,7 @@ export interface VehiclePosition {
   direction: number;
   lat: number;
   long: number;
-  speed: number;
+  speed?: number | null;
   timestamp: number;
   operator: string;
   vehicleType: 'bus' | 'tram' | 'train' | 'metro' | 'ferry';
