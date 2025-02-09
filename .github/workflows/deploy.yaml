@@ -25,7 +25,10 @@ jobs:
           node-version: 20
           cache: 'npm'
       - run: npm ci
-      - run: npm run build
+      - name: Build with base path
+        run: npm run build
+        env:
+          BASE_URL: '/hsl-live-tracker/'
       - uses: JamesIves/github-pages-deploy-action@v4
         with:
           branch: gh-pages
