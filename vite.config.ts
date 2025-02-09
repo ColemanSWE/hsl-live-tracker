@@ -13,6 +13,7 @@ export default defineConfig({
   base: process.env.VITE_BASE_URL || '/hsl-live-tracker/',
   build: {
     outDir: 'dist',
+    assetsDir: '.',
     manifest: true,
     sourcemap: true,
     emptyOutDir: true,
@@ -20,7 +21,7 @@ export default defineConfig({
       output: {
         entryFileNames: `[name].js`,
         chunkFileNames: `[name].js`,
-        assetFileNames: `[name].[ext]`
+        assetFileNames: '[name].[ext]'
       }
     }
   }
