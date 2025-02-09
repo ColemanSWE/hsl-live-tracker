@@ -6,7 +6,10 @@ jest.mock('leaflet', () => ({
   map: jest.fn().mockReturnValue({ setView: jest.fn(), remove: jest.fn() }),
   tileLayer: jest.fn().mockReturnValue({ addTo: jest.fn() }),
   layerGroup: jest.fn().mockReturnValue({ clearLayers: jest.fn(), addTo: jest.fn() }),
-  marker: jest.fn().mockReturnValue({ bindPopup: jest.fn(), addTo: jest.fn() })
+  marker: jest.fn().mockReturnValue({ bindPopup: jest.fn(), addTo: jest.fn() }),
+  control: {
+    zoom: jest.fn().mockReturnValue({ addTo: jest.fn() })
+  }
 }))
 
 jest.mock('leaflet/dist/leaflet.css', () => '');
