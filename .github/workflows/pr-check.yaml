@@ -50,7 +50,14 @@ jobs:
       - run: npm run build
         env:
           VITE_BASE_URL: '/previews/pr-${{ github.event.number }}/'
+      - name: Prepare artifact
+        run: |
+          touch dist/.nojekyll  # Required for GitHub Pages
+          echo "Built: $(date)" > dist/deployment-info.txt
       - uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist/  # Explicit path to build directory
+          retention-days: 1  # Auto-cleanup old previews
       - uses: actions/deploy-pages@v4
       - name: Create Preview Comment
         uses: actions/github-script@v7
