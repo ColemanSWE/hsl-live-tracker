@@ -10,7 +10,7 @@ jobs:
       pages: write
       id-token: write
     environment:
-      name: gh-pages
+      name: github-pages
       url: https://colemanswe.github.io/hsl-live-tracker/
     steps:
       - uses: actions/checkout@v4
