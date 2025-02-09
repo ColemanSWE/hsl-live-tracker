@@ -29,6 +29,7 @@ jobs:
     if: github.event_name == 'pull_request'
     runs-on: ubuntu-latest
     permissions:
+      contents: read
       pages: write
       id-token: write
       pull-requests: write
@@ -37,6 +38,10 @@ jobs:
       url: https://colemanswe.github.io/previews/pr-${{ github.event.number }}/
     steps:
       - uses: actions/checkout@v4
+        with:
+          repository: colemanswe/hsl-live-tracker
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 0
       - uses: actions/setup-node@v4
         with:
           node-version: 20
