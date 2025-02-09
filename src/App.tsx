@@ -35,23 +35,28 @@ function App() {
   })
 
   return (
-      <div className={styles.appContainer}>
-        <h1>HSL Real-Time Tracker</h1>
-        <SearchFilters filters={filters} onFilterChange={setFilters} />
-        
-        {loading ? (
-          <Loader />
-        ) : (
-          <div className={styles.contentWrapper}>
-            <div className={styles.mapContainer} data-testid="map-container">
-              <MapView vehicles={filteredVehicles} />
-            </div>
-            <div className={styles.tableContainer}>
-              <DataTable vehicles={filteredVehicles} />
-            </div>
+    <div className={styles.appContainer}>
+      <h1>HSL Real-Time Tracker</h1>
+      
+      <div className={styles.mainContent}>
+        <div className={styles.mapChartRow}>
+          <div className={styles.mapContainer} data-testid="map-container">
+            <MapView vehicles={filteredVehicles} />
           </div>
-        )}
+          <div className={styles.chartContainer}>
+            <div className={styles.chartPlaceholder}>Chart Component</div>
+          </div>
+        </div>
+
+        <SearchFilters filters={filters} onFilterChange={setFilters} />
+
+        <div className={styles.tableContainer}>
+          <DataTable vehicles={filteredVehicles} />
+        </div>
       </div>
+      
+      {loading && <Loader />}
+    </div>
   )
 }
 
