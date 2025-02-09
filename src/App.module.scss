@@ -8,6 +8,8 @@
   min-height: 100vh;
   background: $background;
   font-family: $font-family;
+  margin: 0 auto;
+  box-sizing: border-box;
   
   h1 {
     color: $text-primary;
@@ -19,6 +21,9 @@
 
 .mainContent {
   width: 100%;
+  max-width: 1600px;
+  margin: 0 auto;
+  box-sizing: border-box;
 }
 
 .mapChartRow {
@@ -51,15 +56,11 @@
 }
 
 .tableContainer {
-  margin-top: 30px;
-  background: white;
+  margin-top: map.get($spacing-scale, 4);
+  background: $surface;
   border-radius: 8px;
-  padding: 20px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-  color: black;
-}
-
-.filtersContainer {
+  padding: map.get($spacing-scale, 3);
+  box-shadow: $shadow-md;
   width: 100%;
-  justify-content: center;
+  box-sizing: border-box;
 }
