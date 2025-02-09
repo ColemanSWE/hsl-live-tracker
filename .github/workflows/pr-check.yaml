@@ -46,19 +46,18 @@ jobs:
       - run: npm ci
       - run: npm run build
         env:
-          VITE_BASE_URL: /hsl-live-tracker/previews/pr-${{ github.event.number }}/
+          VITE_BASE_URL: '/previews/pr-${{ github.event.number }}/'
+      - name: List build files
+        run: ls -R dist
       - uses: actions/upload-pages-artifact@v3
         with:
           path: dist/
       - uses: actions/deploy-pages@v4
-        name: Deploy Preview
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
       - name: Create Preview Comment
         uses: actions/github-script@v7
         with:
           script: |
-            const url = `https://colemanswe.github.io/hsl-live-tracker/previews/pr-${{ github.event.number }}/`
+            const url = `https://colemanswe.github.io/previews/pr-${{ github.event.number }}/`
             github.rest.issues.createComment({
               issue_number: context.issue.number,
               owner: context.repo.owner,

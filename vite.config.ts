@@ -13,6 +13,8 @@ export default defineConfig({
   base: process.env.VITE_BASE_URL || '/hsl-live-tracker/',
   build: {
     outDir: 'dist',
+    manifest: true,
+    sourcemap: true,
     emptyOutDir: true,
     rollupOptions: {
       output: {
