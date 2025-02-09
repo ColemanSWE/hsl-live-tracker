@@ -1,8 +1,20 @@
+@use './styles/variables' as *;
+@use './styles/mixins' as *;
+@use 'sass:map';
 .appContainer {
-  padding: 20px;
+  padding: map.get($spacing-scale, 4);
   width: 100%;
   max-width: 1600px;
   min-height: 100vh;
+  background: $background;
+  font-family: $font-family;
+  
+  h1 {
+    color: $text-primary;
+    font-weight: 600;
+    margin-bottom: map.get($spacing-scale, 4);
+    font-size: map.get($font-scale, h1);
+  }
 }
 
 .mainContent {
@@ -11,25 +23,31 @@
 
 .mapChartRow {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 20px;
-  margin-bottom: 20px;
-  width: 100%;
+  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+  gap: map.get($spacing-scale, 3);
+  margin-bottom: map.get($spacing-scale, 4);
+
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+  }
 }
 
 .mapContainer, .chartContainer {
   height: 500px;
-  border-radius: 8px;
+  border-radius: 12px;
   overflow: hidden;
+  box-shadow: $shadow-md;
+  background: $surface;
 }
 
 .chartPlaceholder {
-  background: #f0f0f0;
-  color: #666;
+  background: $surface;
+  color: $text-secondary;
   height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
+  font-size: map.get($font-scale, body);
 }
 
 .tableContainer {

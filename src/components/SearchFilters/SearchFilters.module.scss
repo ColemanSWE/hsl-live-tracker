@@ -1,17 +1,55 @@
+@use '../../styles/variables' as *;
+@use '../../styles/mixins' as *;
+@use 'sass:color';
+@use 'sass:map';
+
 .filtersContainer {
   display: flex;
-  gap: 15px;
-  margin: 20px 0;
-  padding: 15px;
-  background: #f8f9fa;
+  align-items: center;
+  gap: map.get($spacing-scale, 2); // Adjust gap for better spacing
+  margin: map.get($spacing-scale, 3) 0;
+  padding: map.get($spacing-scale, 2);
+  background: $surface;
   border-radius: 8px;
-  justify-content: center;
+  box-shadow: $shadow-sm;
   width: 100%;
 
-  input, select {
-    padding: 8px 12px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    font-size: 14px;
+  input, select, button {
+    padding: 0 map.get($spacing-scale, 2); // Consistent padding
+    height: 40px; // Consistent height
+    border-radius: 6px;
+    font-size: map.get($font-scale, small);
+    transition: all 0.2s ease;
+    border: 1px solid color.adjust($background, $lightness: -5%);
   }
-} 
+
+  input, select {
+    flex: 1; // Allow input and select to grow
+    &:focus {
+      border-color: $primary;
+      box-shadow: 0 0 0 3px rgba($primary, 0.1);
+      outline: none;
+    }
+  }
+
+  select {
+    appearance: none;
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 0.75rem center;
+    background-size: 1em;
+  }
+
+  button {
+    border: 1px solid transparent;
+    background-color: $primary;
+    color: white;
+    cursor: pointer;
+    flex-shrink: 0; // Prevent button from shrinking
+    padding: 0 map.get($spacing-scale, 3); // Adjust padding for width
+
+    &:hover {
+      background-color: color.adjust($primary, $lightness: -10%);
+    }
+  }
+}

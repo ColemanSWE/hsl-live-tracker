@@ -1,8 +1,9 @@
 import { VehiclePosition } from "../../services/hslApi";
+import styles from './DataTable.module.scss'
 
 export default function DataTable({ vehicles }: { vehicles: VehiclePosition[] }) {
     return (
-      <table className="vehicle-table">
+      <table className={styles.vehicleTable}>
         <thead>
           <tr>
             <th>Route</th>
@@ -17,7 +18,7 @@ export default function DataTable({ vehicles }: { vehicles: VehiclePosition[] })
             <tr key={vehicle.id}>
               <td>{vehicle.route}</td>
               <td>{vehicle.direction}</td>
-              <td className="vehicle-type">{vehicle.vehicleType}</td>
+              <td className={styles.vehicleType}>{vehicle.vehicleType}</td>
               <td>{vehicle.speed?.toFixed(1) ?? 'N/A'}</td>
               <td>{new Date(vehicle.timestamp).toLocaleTimeString()}</td>
             </tr>
