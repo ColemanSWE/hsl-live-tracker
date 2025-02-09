@@ -30,6 +30,10 @@ function App() {
     }
   }, [])
 
+  useEffect(() => {
+    setCurrentPage(1)
+  }, [filters.routeFilter, filters.vehicleType])
+
   const filteredVehicles = vehicles.filter(vehicle => {
     const matchesRoute = vehicle.route.toLowerCase().includes(filters.routeFilter.toLowerCase())
     const matchesType = filters.vehicleType === 'all' || vehicle.vehicleType === filters.vehicleType
