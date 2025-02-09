@@ -73,6 +73,18 @@ export default function MapView({ vehicles }: { vehicles: VehiclePosition[] }) {
         const icon = createVehicleIcon(vehicle.vehicleType)
         
         L.marker([vehicle.lat, vehicle.long], { icon })
+          .bindTooltip(`
+            <div class="vehicle-tooltip">
+              <strong>${vehicle.route}</strong>
+              <span>${vehicle.vehicleType}</span>
+              <span>${vehicle.speed?.toFixed(1) ?? 'N/A'} m/s</span>
+            </div>
+          `, {
+            direction: 'top',
+            offset: [0, -10],
+            permanent: false,
+            sticky: true
+          })
           .bindPopup(`
             <div class="vehicle-popup">
               <strong>Route ${vehicle.route}</strong>
