@@ -1,4 +1,4 @@
-name: PR Check
+name: PR Checks
 on:
   pull_request:
     branches: [main]
@@ -24,12 +24,11 @@ jobs:
       - run: npm run test:ci
 
   preview:
-    name: Deploy Preview
+    name: Preview Deployment
     needs: test
     if: github.event_name == 'pull_request'
     runs-on: ubuntu-latest
     permissions:
-      contents: write
       pages: write
       pull-requests: write
     environment: preview
@@ -43,17 +42,15 @@ jobs:
       - run: npm run build
         env:
           VITE_BASE_URL: /hsl-live-tracker/previews/pr-${{ github.event.number }}/
-      - name: Upload Artifact
-        uses: actions/upload-pages-artifact@v3
+      - uses: actions/upload-pages-artifact@v3
         with:
           path: dist/
-      - name: Deploy to GitHub Pages
-        uses: actions/deploy-pages@v4
+      - uses: actions/deploy-pages@v4
+        name: Deploy Preview
         with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
           target-hosting: github-pages
           environment: preview
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          preview-url: true
       - name: Create Preview Comment
         uses: actions/github-script@v7
         with:
