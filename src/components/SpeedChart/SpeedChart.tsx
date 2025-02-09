@@ -1,4 +1,4 @@
-import { BarChart, Bar, XAxis, YAxis, ResponsiveContainer, Text, Cell } from 'recharts'
+import { BarChart, Bar, XAxis, YAxis, ResponsiveContainer, Cell } from 'recharts'
 import { VehiclePosition } from '../../services/hslApi'
 import styles from './SpeedChart.module.scss'
 
@@ -48,19 +48,12 @@ export default function SpeedChart({ vehicles }: { vehicles: VehiclePosition[] }
             dataKey="vehicleType"
             style={{ textTransform: 'capitalize' }}
             tick={{ fill: '#fff', fontSize: 14 }}
-            label={
-              <Text
-                x={400}
-                y={325}
-                textAnchor="middle"
-                style={{ textTransform: 'capitalize' }}
-                fill="#fff"
-                fontSize={14}
-                dy={30}
-              >
-                Vehicle Type
-              </Text>
-            }
+            label={{
+                value: 'Vehicle Type',
+                fill: '#fff',
+                fontSize: 14,
+                dy: 30
+              }}
           />
           <YAxis
             tick={{ fill: '#fff', fontSize: 14 }}
