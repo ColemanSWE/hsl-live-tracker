@@ -8,7 +8,7 @@ jest.mock('recharts', () => ({
   ...jest.requireActual('recharts'),
   ResponsiveContainer: ({ children }: { children: React.ReactNode }) => (
     <div data-testid="responsive-container">
-      {children && React.cloneElement(children as React.ReactElement)}
+      {children}
     </div>
   )
 }))
