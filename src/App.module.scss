@@ -2,13 +2,11 @@
   padding: 20px;
   width: 100%;
   max-width: 1600px;
-  margin: 0 auto;
   min-height: 100vh;
 }
 
 .mainContent {
-  margin: 20px auto 0;
-  max-width: 1200px;
+  width: 100%;
 }
 
 .mapChartRow {
@@ -16,6 +14,7 @@
   grid-template-columns: repeat(2, 1fr);
   gap: 20px;
   margin-bottom: 20px;
+  width: 100%;
 }
 
 .mapContainer, .chartContainer {
@@ -40,4 +39,9 @@
   padding: 20px;
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
   color: black;
+}
+
+.filtersContainer {
+  width: 100%;
+  justify-content: center;
 }
