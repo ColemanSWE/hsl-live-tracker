@@ -42,7 +42,7 @@ export default function SpeedChart({ vehicles }: { vehicles: VehiclePosition[] }
       <ResponsiveContainer width="100%" height={400}>
         <BarChart
           data={chartData}
-          margin={{ top: 20, right: 30, left: 40, bottom: 60 }}
+          margin={{ top: 20, right: 30, left: 40, bottom: 20 }}
         >
           <XAxis 
             dataKey="vehicleType"
