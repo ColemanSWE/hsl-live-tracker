@@ -87,4 +87,23 @@
 
 .recharts-legend-wrapper {
   bottom: -30px !important;
+}
+
+.customTooltip {
+  background: white;
+  border: 1px solid #404040;
+  border-radius: 4px;
+  padding: 1rem;
+  color: black;
+  
+  p {
+    margin: 0;
+    font-size: 14px;
+    
+    &:first-child {
+      text-transform: capitalize;
+      font-weight: 500;
+      margin-bottom: 4px;
+    }
+  }
 } 

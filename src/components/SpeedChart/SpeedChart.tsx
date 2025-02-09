@@ -1,4 +1,4 @@
-import { BarChart, Bar, XAxis, YAxis, ResponsiveContainer, Cell } from 'recharts'
+import { BarChart, Bar, XAxis, YAxis, ResponsiveContainer, Cell, Tooltip, TooltipProps } from 'recharts'
 import { VehiclePosition } from '../../services/hslApi'
 import styles from './SpeedChart.module.scss'
 
@@ -10,11 +10,9 @@ const VEHICLE_COLORS: Record<string, string> = {
   default: '#666666'
 }
 
-// Add data processing function
 const processData = (rawData: Array<{ vehicleType: string; speed: number }>) => {
   const averages: Record<string, { count: number; total: number }> = {};
 
-  // Calculate averages
   rawData.forEach(({ vehicleType, speed }) => {
     if (!averages[vehicleType]) {
       averages[vehicleType] = { count: 0, total: 0 };
@@ -23,11 +21,31 @@ const processData = (rawData: Array<{ vehicleType: string; speed: number }>) => 
     averages[vehicleType].total += speed;
   });
 
-  // Convert to chart format
   return Object.entries(averages).map(([type, { count, total }]) => ({
     vehicleType: type,
     speed: total / count
   }));
+};
+
+type ChartData = {
+  vehicleType: string;
+  speed: number;
+};
+
+const CustomTooltip = ({
+  active,
+  payload,
+}: TooltipProps<number, string>) => {
+  if (active && payload?.[0]?.payload) {
+    const data = payload[0].payload as ChartData;
+    return (
+      <div className={styles.customTooltip}>
+        <p>{data.vehicleType}</p>
+        <p>{(data.speed || 0).toFixed(1)} m/s</p>
+      </div>
+    );
+  }
+  return null;
 };
 
 export default function SpeedChart({ vehicles }: { vehicles: VehiclePosition[] }) {
@@ -42,8 +60,9 @@ export default function SpeedChart({ vehicles }: { vehicles: VehiclePosition[] }
       <ResponsiveContainer width="100%" height={400}>
         <BarChart
           data={chartData}
-          margin={{ top: 20, right: 30, left: 40, bottom: 20 }}
+          margin={{ top: 20, right: 30, left: 40, bottom: 60 }}
         >
+          <Tooltip content={<CustomTooltip />} />
           <XAxis 
             dataKey="vehicleType"
             style={{ textTransform: 'capitalize' }}
