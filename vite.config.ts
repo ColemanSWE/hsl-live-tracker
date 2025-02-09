@@ -10,19 +10,17 @@ export default defineConfig({
       localsConvention: 'camelCase'
     }
   },
-  base: process.env.VITE_BASE_URL || '/hsl-live-tracker/',
+  base: process.env.VITE_BASE_URL || '/',
   build: {
     outDir: 'dist',
-    assetsDir: '.',
-    manifest: true,
-    sourcemap: true,
     emptyOutDir: true,
     rollupOptions: {
       output: {
         entryFileNames: `[name].js`,
         chunkFileNames: `[name].js`,
-        assetFileNames: '[name].[ext]'
+        assetFileNames: `[name].[ext]`
       }
     }
   }
 })
+

@@ -28,47 +28,47 @@ jobs:
     needs: test
     if: github.event_name == 'pull_request'
     runs-on: ubuntu-latest
+    environment: preview
     permissions:
-      contents: read
+      contents: write
       pages: write
       id-token: write
-      pull-requests: write
-    environment:
-      name: preview
-      url: https://colemanswe.github.io/previews/pr-${{ github.event.number }}/
     steps:
       - uses: actions/checkout@v4
         with:
-          repository: colemanswe/hsl-live-tracker
-          token: ${{ secrets.GITHUB_TOKEN }}
           fetch-depth: 0
+
       - uses: actions/setup-node@v4
         with:
           node-version: 20
           cache: 'npm'
-      - run: npm ci
-      - run: npm run build
-        env:
-          VITE_BASE_URL: '/previews/pr-${{ github.event.number }}/'
-      - name: Prepare artifact
+
+      - name: Build with base path
         run: |
-          touch dist/.nojekyll  # Required for GitHub Pages
-          echo "Built: $(date)" > dist/deployment-info.txt
-      - uses: actions/upload-pages-artifact@v3
+          npm ci
+          npm run build
+        env:
+          VITE_BASE_URL: '/hsl-live-tracker/previews/pr-${{ github.event.number }}/'
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
         with:
-          path: dist/  # Explicit path to build directory
-          retention-days: 1  # Auto-cleanup old previews
-      - uses: actions/deploy-pages@v4
-      - name: Create Preview Comment
+          github_token: ${{ secrets.GH_PAGES_TOKEN }}
+          publish_dir: ./dist
+          destination_dir: hsl-live-tracker/previews/pr-${{ github.event.number }}
+          force_orphan: true
+          keep_files: false
+
+      - name: Create comment
         uses: actions/github-script@v7
         with:
           script: |
-            const url = `https://colemanswe.github.io/previews/pr-${{ github.event.number }}/`
+            const url = `https://colemanswe.github.io/hsl-live-tracker/previews/pr-${{ github.event.number }}/`
             github.rest.issues.createComment({
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
-              body: `🚀 Preview deployment available at: [${url}](${url})`
+              body: `🚀 Preview: ${url}`
             })
 
       - name: Report Status
