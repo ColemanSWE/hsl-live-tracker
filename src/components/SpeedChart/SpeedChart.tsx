@@ -1,5 +1,4 @@
-import { useMemo } from 'react'
-import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Cell } from 'recharts'
+import { BarChart, Bar, XAxis, YAxis, ResponsiveContainer, Text, Cell } from 'recharts'
 import { VehiclePosition } from '../../services/hslApi'
 import styles from './SpeedChart.module.scss'
 
@@ -11,75 +10,74 @@ const VEHICLE_COLORS: Record<string, string> = {
   default: '#666666'
 }
 
-export default function SpeedChart({ vehicles }: { vehicles: VehiclePosition[] }) {
-  const chartData = useMemo(() => {
-    const typeMap = new Map<string, { total: number; count: number }>()
-    
-    vehicles.forEach(vehicle => {
-      if (vehicle.speed === undefined) return
-      const current = typeMap.get(vehicle.vehicleType) || { total: 0, count: 0 }
-      typeMap.set(vehicle.vehicleType, {
-        total: current.total + (vehicle.speed || 0),
-        count: current.count + 1
-      })
-    })
+// Add data processing function
+const processData = (rawData: Array<{ vehicleType: string; speed: number }>) => {
+  const averages: Record<string, { count: number; total: number }> = {};
 
-    return Array.from(typeMap.entries()).map(([vehicleType, { total, count }]) => ({
-      vehicleType,
-      averageSpeed: count > 0 ? total / count : 0
-    }))
-  }, [vehicles])
+  // Calculate averages
+  rawData.forEach(({ vehicleType, speed }) => {
+    if (!averages[vehicleType]) {
+      averages[vehicleType] = { count: 0, total: 0 };
+    }
+    averages[vehicleType].count++;
+    averages[vehicleType].total += speed;
+  });
+
+  // Convert to chart format
+  return Object.entries(averages).map(([type, { count, total }]) => ({
+    vehicleType: type,
+    speed: total / count
+  }));
+};
+
+export default function SpeedChart({ vehicles }: { vehicles: VehiclePosition[] }) {
+  const chartData = processData(vehicles.map(vehicle => ({
+    vehicleType: vehicle.vehicleType,
+    speed: vehicle.speed || 0
+  })));
 
   return (
     <div className={styles.chartContainer}>
       <h3>Average Speed by Vehicle Type</h3>
       <ResponsiveContainer width="100%" height={400}>
-        <BarChart data={chartData}>
+        <BarChart
+          data={chartData}
+          margin={{ top: 20, right: 30, left: 40, bottom: 60 }}
+        >
           <XAxis 
-            dataKey="vehicleType" 
-            tick={{ fill: '#ffffff', fontSize: 14 }}
-            axisLine={{ stroke: '#666' }}
-            label={{ 
-              value: 'Vehicle Type', 
-              position: 'bottom', 
-              fill: '#ffffff',
-              fontSize: 14
-            }}
+            dataKey="vehicleType"
+            style={{ textTransform: 'capitalize' }}
+            tick={{ fill: '#fff', fontSize: 14 }}
+            label={
+              <Text
+                x={400}
+                y={325}
+                textAnchor="middle"
+                style={{ textTransform: 'capitalize' }}
+                fill="#fff"
+                fontSize={14}
+                dy={30}
+              >
+                Vehicle Type
+              </Text>
+            }
           />
           <YAxis
-            unit="m/s"
-            tick={{ fill: '#ffffff', fontSize: 14 }}
-            axisLine={{ stroke: '#666' }}
-            tickFormatter={(value) => value.toFixed(1)}
+            tick={{ fill: '#fff', fontSize: 14 }}
             label={{
               value: 'Average Speed (m/s)',
               angle: -90,
-              fill: '#ffffff',
-              fontSize: 14
+              position: 'left',
+              fill: '#fff',
+              fontSize: 14,
+              dx: -35
             }}
           />
-          <Tooltip
-            content={({ active, payload }) => {
-              if (active && payload && payload.length) {
-                return (
-                  <div className={styles.tooltip}>
-                    <p>{payload[0].payload.vehicleType}</p>
-                    <p>{Number(payload[0].value)?.toFixed(1)} m/s</p>
-                  </div>
-                )
-              }
-              return null
-            }}
-          />
-          <Bar
-            dataKey="averageSpeed"
-            name="Average Speed"
-            isAnimationActive={false}
-          >
-            {chartData.map((entry) => (
+          <Bar dataKey="speed" isAnimationActive={false}>
+            {chartData.map((entry, index) => (
               <Cell
-                key={entry.vehicleType}
-                fill={VEHICLE_COLORS[entry.vehicleType] || VEHICLE_COLORS.default}
+                key={`cell-${index}`}
+                fill={VEHICLE_COLORS[entry.vehicleType as keyof typeof VEHICLE_COLORS] || VEHICLE_COLORS.default}
               />
             ))}
           </Bar>
