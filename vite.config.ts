@@ -10,7 +10,7 @@ export default defineConfig({
       localsConvention: 'camelCase'
     }
   },
-  base: process.env.VITE_BASE_URL || '/',
+  base: process.env.VITE_BASE_URL || './',
   build: {
     outDir: 'dist',
     emptyOutDir: true,

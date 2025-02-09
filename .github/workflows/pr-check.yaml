@@ -28,6 +28,11 @@ jobs:
       - run: npm ci
       - run: npm run build
       - run: npm run test:ci
+      - name: Add routing support
+        run: |
+          echo '<script>window.location.replace(window.location.pathname + "index.html")</script>' > dist/redirect.html
+          cp dist/index.html dist/404.html
+      - uses: actions/upload-pages-artifact@v3
 
   preview:
     name: Preview Deployment
