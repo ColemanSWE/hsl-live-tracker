@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import styles from './SearchFilters.module.scss'
 
 type Filters = {
   routeFilter: string
@@ -17,7 +18,7 @@ export default function SearchFilters({
   const handleApply = () => onFilterChange(localFilters)
 
   return (
-    <div className="filters-container">
+    <div className={styles.filtersContainer}>
       <input
         type="text"
         placeholder="Filter by route..."
