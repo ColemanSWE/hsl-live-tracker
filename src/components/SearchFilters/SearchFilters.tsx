@@ -35,6 +35,7 @@ export default function SearchFilters({
         <option value="tram">Trams</option>
         <option value="metro">Metro</option>
         <option value="train">Trains</option>
+        <option value="ferry">Ferries</option>
       </select>
 
       <button onClick={handleApply}>Apply Filters</button>

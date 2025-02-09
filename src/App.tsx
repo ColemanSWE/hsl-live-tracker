@@ -79,7 +79,7 @@ function App() {
             <MapView vehicles={filteredVehicles} />
           </div>
           <div className={styles.chartContainer}>
-            <SpeedChart vehicles={filteredVehicles} />
+            <SpeedChart vehicles={vehicles} />
           </div>
         </div>
 

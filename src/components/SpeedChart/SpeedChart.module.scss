@@ -36,4 +36,33 @@
 
 .recharts-tooltip-item {
   color: #ffffff !important;
+}
+
+.tooltip {
+  background: #2d2d2d !important;
+  border: 1px solid #404040 !important;
+  border-radius: 6px;
+  padding: 1rem;
+  color: #ffffff;
+  
+  p {
+    margin: 0;
+    font-size: map.get($font-scale, medium);
+    
+    &:first-child {
+      text-transform: capitalize;
+      color: #007ac9;
+      font-weight: 500;
+      margin-bottom: 0.5rem;
+    }
+  }
+}
+
+.recharts-cartesian-axis-line {
+  stroke: #666 !important;
+}
+
+.recharts-label {
+  fill: #ffffff !important;
+  font-size: map.get($font-scale, medium);
 } 

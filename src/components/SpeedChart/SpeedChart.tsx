@@ -39,21 +39,37 @@ export default function SpeedChart({ vehicles }: { vehicles: VehiclePosition[] }
             dataKey="vehicleType" 
             tick={{ fill: '#ffffff', fontSize: 14 }}
             axisLine={{ stroke: '#666' }}
+            label={{ 
+              value: 'Vehicle Type', 
+              position: 'bottom', 
+              fill: '#ffffff',
+              fontSize: 14
+            }}
           />
           <YAxis
             unit="m/s"
             tick={{ fill: '#ffffff', fontSize: 14 }}
             axisLine={{ stroke: '#666' }}
             tickFormatter={(value) => value.toFixed(1)}
+            label={{
+              value: 'Average Speed (m/s)',
+              angle: -90,
+              fill: '#ffffff',
+              fontSize: 14
+            }}
           />
           <Tooltip
-            contentStyle={{
-              backgroundColor: '#2d2d2d',
-              border: '1px solid #404040',
-              borderRadius: '6px',
-              color: '#ffffff'
+            content={({ active, payload }) => {
+              if (active && payload && payload.length) {
+                return (
+                  <div className={styles.tooltip}>
+                    <p>{payload[0].payload.vehicleType}</p>
+                    <p>{Number(payload[0].value)?.toFixed(1)} m/s</p>
+                  </div>
+                )
+              }
+              return null
             }}
-            formatter={(value) => [Number(value).toFixed(1) + ' m/s', 'Average Speed']}
           />
           <Bar
             dataKey="averageSpeed"
