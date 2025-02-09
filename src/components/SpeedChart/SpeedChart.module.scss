@@ -1,0 +1,39 @@
+@use '../../styles/variables' as *;
+@use '../../styles/mixins' as *;
+@use 'sass:map';
+
+.chartContainer {
+  background: $surface;
+  border-radius: 12px;
+  padding: 1.5rem;
+  height: 500px;
+  box-shadow: $shadow-md;
+  
+  h3 {
+    color: $text-primary;
+    margin-bottom: 1rem;
+    font-size: map.get($font-scale, h3);
+    font-weight: 500;
+  }
+  
+  .recharts-wrapper {
+    margin: 0 auto;
+  }
+  
+  .recharts-cartesian-axis-tick-value {
+    font-size: map.get($font-scale, small);
+  }
+}
+
+.recharts-text {
+  dominant-baseline: middle;
+}
+
+.recharts-cartesian-axis-tick {
+  font-size: map.get($font-scale, medium);
+  font-weight: 500;
+}
+
+.recharts-tooltip-item {
+  color: #ffffff !important;
+} 

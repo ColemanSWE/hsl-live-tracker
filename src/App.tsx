@@ -4,6 +4,7 @@ import MapView from './components/MapView/MapView'
 import DataTable from './components/DataTable/DataTable'
 import SearchFilters from './components/SearchFilters/SearchFilters'
 import Loader from './components/Loader/Loader'
+import SpeedChart from './components/SpeedChart/SpeedChart'
 import styles from './App.module.scss'
 
 function App() {
@@ -78,7 +79,7 @@ function App() {
             <MapView vehicles={filteredVehicles} />
           </div>
           <div className={styles.chartContainer}>
-            <div className={styles.chartPlaceholder}>Chart Component</div>
+            <SpeedChart vehicles={filteredVehicles} />
           </div>
         </div>
 
