@@ -3,6 +3,12 @@ on:
   pull_request:
     branches: [main]
     types: [opened, synchronize, reopened]
+  workflow_dispatch:
+    inputs:
+      pr_number:
+        description: 'PR Number to test'
+        required: true
+        type: number
 
 jobs:
   test:
@@ -32,6 +38,7 @@ jobs:
     permissions:
       contents: write
       pages: write
+      pull-requests: write
       id-token: write
     steps:
       - uses: actions/checkout@v4
@@ -62,13 +69,14 @@ jobs:
       - name: Create comment
         uses: actions/github-script@v7
         with:
+          github-token: ${{ secrets.GH_PAGES_TOKEN }}
           script: |
             const url = `https://colemanswe.github.io/hsl-live-tracker/previews/pr-${{ github.event.number }}/`
             github.rest.issues.createComment({
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
-              body: `🚀 Preview: ${url}`
+              body: `🚀 Preview: [${url}](${url})`
             })
 
       - name: Report Status
