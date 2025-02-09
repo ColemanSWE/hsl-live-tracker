@@ -47,8 +47,6 @@ jobs:
       - run: npm run build
         env:
           VITE_BASE_URL: '/previews/pr-${{ github.event.number }}/'
-      - name: Add .nojekyll
-        run: touch dist/.nojekyll  # Create empty file
       - uses: actions/upload-pages-artifact@v3
         with:
           path: dist/
