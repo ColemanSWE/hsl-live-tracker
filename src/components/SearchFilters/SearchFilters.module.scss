@@ -57,3 +57,30 @@
     }
   }
 }
+
+// Add mobile-specific styles
+@media (max-width: 480px) {
+  .filtersContainer {
+    flex-direction: column;
+    gap: map.get($spacing-scale, 1);
+    padding: map.get($spacing-scale, 1);
+
+    input,
+    select,
+    button {
+      width: 100%;
+      height: 36px;
+      font-size: 0.9rem;
+    }
+
+    input {
+      width: 89%;
+      height: 36px;
+      font-size: 0.9rem;
+    }
+
+    button {
+      margin-top: map.get($spacing-scale, 1);
+    }
+  }
+}

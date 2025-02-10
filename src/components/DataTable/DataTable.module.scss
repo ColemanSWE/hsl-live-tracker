@@ -3,23 +3,61 @@
 @use 'sass:color';
 @use 'sass:map';
 
+.tableContainer {
+  width: 100%;
+  margin: map.get($spacing-scale, 3) 0;
+}
+
+.tableScrollContainer {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  background: $surface;
+  border-radius: 8px;
+  box-shadow: $shadow-md;
+  margin: map.get($spacing-scale, 2) 0;
+  min-width: 800px;
+
+  // Hide scrollbar
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  @media (max-width: 768px) {
+    margin: 0;
+    border-radius: 0;
+    max-width: 100%;
+  }
+}
+
 .table {
   width: 100%;
   border-collapse: separate;
   border-spacing: 0 4px;
   background: $surface;
-  box-shadow: $shadow-md;
-  border-radius: 8px;
-  overflow: hidden;
-  margin: map.get($spacing-scale, 3) 0;
-  margin-top: 0;
-  min-width: 800px;
+  box-sizing: border-box;
 
   th,
   td {
-    padding: map.get($spacing-scale, 2);
+    padding: map.get($spacing-scale, 1.5);
+    white-space: nowrap;
     text-align: left;
     border-bottom: 1px solid color.adjust($background, $lightness: -5%);
+    box-sizing: border-box; // Ensure padding doesn't affect width
+    overflow: hidden;
+    text-overflow: ellipsis;
+
+    @media (max-width: 480px) {
+      padding: map.get($spacing-scale, 1);
+      font-size: 0.875rem;
+    }
+
+    &:first-child {
+      padding-left: map.get($spacing-scale, 3);
+    }
+    &:last-child {
+      padding-right: map.get($spacing-scale, 3);
+    }
   }
 
   th {
@@ -32,6 +70,7 @@
     position: sticky;
     top: 0;
     z-index: 1;
+    left: 0;
     &:first-child {
       border-radius: 8px 0 0 0;
     }
@@ -73,5 +112,29 @@
     font-weight: 600;
     color: $text-primary;
     letter-spacing: 0.3px;
+  }
+
+  @media (max-width: 768px) {
+    min-width: calc(100% - 32px); // Account for mobile padding
+    margin: 0 16px;
+    font-size: 0.875rem;
+
+    th,
+    td {
+      padding: map.get($spacing-scale, 1);
+      min-width: 80px;
+    }
+
+    .vehicle-type {
+      font-size: 0.8rem;
+    }
+  }
+}
+
+.paginationInfo {
+  @media (max-width: 480px) {
+    font-size: 0.8rem;
+    text-align: center;
+    margin-bottom: map.get($spacing-scale, 2);
   }
 }
