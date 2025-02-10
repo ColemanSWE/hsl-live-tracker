@@ -17,8 +17,28 @@ const mockVehicles: VehiclePosition[] = [
   },
 ];
 
+const mockPagination = {
+  currentPage: 1,
+  itemsPerPage: 10,
+  totalItems: 1,
+  totalPages: 1,
+};
+
+const mockCallbacks = {
+  onFilterChange: jest.fn(),
+  onPageChange: jest.fn(),
+  onItemsPerPageChange: jest.fn(),
+};
+
 test('displays vehicle data correctly', () => {
-  render(<DataTable vehicles={mockVehicles} />);
+  render(
+    <DataTable
+      vehicles={mockVehicles}
+      filters={{ routeFilter: '', vehicleType: 'all' }}
+      pagination={mockPagination}
+      {...mockCallbacks}
+    />,
+  );
 
   expect(screen.getByText('550')).toBeInTheDocument();
   expect(screen.getByText('bus')).toBeInTheDocument();
@@ -33,6 +53,13 @@ test('handles missing speed values', () => {
     },
   ];
 
-  render(<DataTable vehicles={vehicles} />);
+  render(
+    <DataTable
+      vehicles={vehicles}
+      filters={{ routeFilter: '', vehicleType: 'all' }}
+      pagination={mockPagination}
+      {...mockCallbacks}
+    />,
+  );
   expect(screen.getByText('N/A')).toBeInTheDocument();
 });
