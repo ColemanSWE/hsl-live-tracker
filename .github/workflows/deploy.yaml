@@ -14,7 +14,7 @@ jobs:
       - run: npm ci
       - run: npm run build
       - run: npm run test:ci
-          
+
   deploy:
     needs: test
     runs-on: ubuntu-latest

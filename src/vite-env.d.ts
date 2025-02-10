@@ -3,8 +3,8 @@
 
 // Leaflet CSS type declaration
 declare module 'leaflet/dist/leaflet.css' {
-  const css: string
-  export default css
+  const css: string;
+  export default css;
 }
 
-// Remove all other CSS declarations - Vite handles these by default 
+// Remove all other CSS declarations - Vite handles these by default

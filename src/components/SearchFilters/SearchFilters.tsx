@@ -1,21 +1,21 @@
-import { useState } from 'react'
-import styles from './SearchFilters.module.scss'
+import { useState } from 'react';
+import styles from './SearchFilters.module.scss';
 
 type Filters = {
-  routeFilter: string
-  vehicleType: string
-}
+  routeFilter: string;
+  vehicleType: string;
+};
 
-export default function SearchFilters({ 
+export default function SearchFilters({
   filters,
-  onFilterChange
+  onFilterChange,
 }: {
-  filters: Filters
-  onFilterChange: (filters: Filters) => void
+  filters: Filters;
+  onFilterChange: (filters: Filters) => void;
 }) {
-  const [localFilters, setLocalFilters] = useState(filters)
+  const [localFilters, setLocalFilters] = useState(filters);
 
-  const handleApply = () => onFilterChange(localFilters)
+  const handleApply = () => onFilterChange(localFilters);
 
   return (
     <div className={styles.filtersContainer}>
@@ -23,12 +23,12 @@ export default function SearchFilters({
         type="text"
         placeholder="Filter by route..."
         value={localFilters.routeFilter}
-        onChange={e => setLocalFilters(prev => ({...prev, routeFilter: e.target.value}))}
+        onChange={(e) => setLocalFilters((prev) => ({ ...prev, routeFilter: e.target.value }))}
       />
-      
-      <select 
+
+      <select
         value={localFilters.vehicleType}
-        onChange={e => setLocalFilters(prev => ({...prev, vehicleType: e.target.value}))}
+        onChange={(e) => setLocalFilters((prev) => ({ ...prev, vehicleType: e.target.value }))}
       >
         <option value="all">All Vehicles</option>
         <option value="bus">Buses</option>
@@ -40,5 +40,5 @@ export default function SearchFilters({
 
       <button onClick={handleApply}>Apply Filters</button>
     </div>
-  )
+  );
 }
