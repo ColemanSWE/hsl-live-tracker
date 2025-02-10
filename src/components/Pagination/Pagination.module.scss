@@ -88,3 +88,30 @@
     justify-content: center;
   }
 }
+
+@media (max-width: 480px) {
+  .paginationContainer {
+    gap: map.get($spacing-scale, 1);
+  }
+
+  .paginationControls {
+    gap: map.get($spacing-scale, 0.5);
+    flex-wrap: nowrap;
+    justify-content: center;
+    max-width: 100%;
+    overflow-x: visible;
+  }
+
+  .paginationButton,
+  .pageNumber {
+    padding: map.get($spacing-scale, 0.5) map.get($spacing-scale, 1);
+    font-size: 0.8rem;
+  }
+
+  .pageSizeSelect {
+    width: 100%;
+    max-width: none;
+    text-align: center;
+    margin: map.get($spacing-scale, 1) 0;
+  }
+}
