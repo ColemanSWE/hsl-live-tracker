@@ -59,7 +59,9 @@ function App() {
 
   return (
     <div className={styles.appContainer}>
-      <h1>HSL Real-Time Tracker</h1>
+      <div className={styles.header}>
+        <h1 className={styles.title}>HSL Real-Time Tracker</h1>
+      </div>
 
       <div className={styles.mainContent}>
         <div className={styles.mapChartRow}>

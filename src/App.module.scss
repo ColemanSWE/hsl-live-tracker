@@ -24,7 +24,12 @@
     font-weight: 600;
     margin-bottom: map.get($spacing-scale, 4);
     font-size: map.get($font-scale, h1);
+    text-align: center;
   }
+}
+
+.header {
+  padding: map.get($spacing-scale, 4);
 }
 
 .mainContent {
