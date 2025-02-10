@@ -7,11 +7,6 @@
   display: flex;
   align-items: center;
   gap: map.get($spacing-scale, 2);
-  margin: map.get($spacing-scale, 3) 0;
-  padding: map.get($spacing-scale, 3);
-  background: $surface;
-  border-radius: 8px;
-  box-shadow: $shadow-sm;
   width: 100%;
   box-sizing: border-box;
   overflow-x: auto;
