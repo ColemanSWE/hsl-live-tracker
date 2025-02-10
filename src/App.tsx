@@ -5,6 +5,7 @@ import DataTable from './components/DataTable/DataTable'
 import SearchFilters from './components/SearchFilters/SearchFilters'
 import Loader from './components/Loader/Loader'
 import SpeedChart from './components/SpeedChart/SpeedChart'
+import { throttle } from 'lodash'
 import styles from './App.module.scss'
 
 function App() {
@@ -18,16 +19,19 @@ function App() {
   const [itemsPerPage, setItemsPerPage] = useState(10)
 
   useEffect(() => {
-    const cleanup = initRealtimeConnection(vehicle => {
+    const throttledSetVehicles = throttle((vehicle: VehiclePosition) => {
       setVehicles(prev => {
         const existing = prev.find(v => v.id === vehicle.id)
         return existing ? prev.map(v => v.id === vehicle.id ? vehicle : v) : [...prev, vehicle]
       })
       setLoading(false)
-    })
+    }, 10)
 
+    const cleanup = initRealtimeConnection(throttledSetVehicles)
+    
     return () => {
-      cleanup();
+      cleanup()
+      throttledSetVehicles.cancel()
     }
   }, [])
 
