@@ -10,21 +10,12 @@
     "paths": {
       "@/*": ["./src/*"]
     },
-    "types": [
-      "vite/client",
-      "leaflet",
-      "jest",
-      "@testing-library/jest-dom"
-    ],
+    "types": ["vite/client", "leaflet", "jest", "@testing-library/jest-dom"],
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
     "esModuleInterop": true,
     "resolveJsonModule": true
   },
-  "include": [
-    "src",
-    "__tests__",
-    "vite.config.ts"
-  ],
+  "include": ["src", "__tests__", "vite.config.ts"],
   "exclude": ["node_modules", "dist"]
 }

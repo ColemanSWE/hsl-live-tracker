@@ -1,9 +1,9 @@
-import { useEffect, useRef, useState } from 'react'
-import L from 'leaflet'
-import 'leaflet/dist/leaflet.css'
-import { VehiclePosition } from '../../services/hslApi'
-import styles from './MapView.module.scss'
-import { throttle } from 'lodash'
+import { useEffect, useRef, useState } from 'react';
+import L from 'leaflet';
+import 'leaflet/dist/leaflet.css';
+import { VehiclePosition } from '../../services/hslApi';
+import styles from './MapView.module.scss';
+import { throttle } from 'lodash';
 
 const VEHICLE_ICONS: Record<string, { color: string; symbol: string }> = {
   bus: { color: '#007ac9', symbol: '🚌' },
@@ -11,12 +11,12 @@ const VEHICLE_ICONS: Record<string, { color: string; symbol: string }> = {
   metro: { color: '#ff6319', symbol: '🚇' },
   train: { color: '#8c4799', symbol: '🚆' },
   ferry: { color: '#666666', symbol: '⛴' },
-  default: { color: '#94a3b8', symbol: '🚦' }
-}
+  default: { color: '#94a3b8', symbol: '🚦' },
+};
 
 const createVehicleIcon = (vehicleType: string) => {
-  const { color, symbol } = VEHICLE_ICONS[vehicleType] || VEHICLE_ICONS.default
-  
+  const { color, symbol } = VEHICLE_ICONS[vehicleType] || VEHICLE_ICONS.default;
+
   return L.divIcon({
     className: 'vehicle-marker',
     html: `
@@ -33,9 +33,9 @@ const createVehicleIcon = (vehicleType: string) => {
       </svg>
     `,
     iconSize: [40, 40],
-    iconAnchor: [20, 20]
-  })
-}
+    iconAnchor: [20, 20],
+  });
+};
 
 // Add interface with timestamp
 interface TrackedVehicle extends VehiclePosition {
@@ -43,9 +43,9 @@ interface TrackedVehicle extends VehiclePosition {
 }
 
 export default function MapView({ vehicles }: { vehicles: VehiclePosition[] }) {
-  const mapRef = useRef<L.Map | null>(null)
-  const markerLayerRef = useRef(L.layerGroup())
-  const markersRef = useRef<Record<string, L.Marker>>({})
+  const mapRef = useRef<L.Map | null>(null);
+  const markerLayerRef = useRef(L.layerGroup());
+  const markersRef = useRef<Record<string, L.Marker>>({});
   const [trackedVehicles, setTrackedVehicles] = useState<Record<string, TrackedVehicle>>({});
   const cleanupTimer = useRef<number | null>(null);
 
@@ -53,35 +53,35 @@ export default function MapView({ vehicles }: { vehicles: VehiclePosition[] }) {
     if (!mapRef.current) {
       mapRef.current = L.map('map', {
         preferCanvas: true,
-        zoomControl: false
-      }).setView([60.1699, 24.9384], 13)
+        zoomControl: false,
+      }).setView([60.1699, 24.9384], 13);
 
       L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         updateWhenIdle: true,
         updateInterval: 200,
         keepBuffer: 5,
-        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-      }).addTo(mapRef.current)
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+      }).addTo(mapRef.current);
 
       // Add marker layer to map
-      markerLayerRef.current.addTo(mapRef.current)
-      L.control.zoom({ position: 'topright' }).addTo(mapRef.current)
+      markerLayerRef.current.addTo(mapRef.current);
+      L.control.zoom({ position: 'topright' }).addTo(mapRef.current);
     }
 
     return () => {
-      mapRef.current?.remove()
-      mapRef.current = null
-    }
-  }, [])
+      mapRef.current?.remove();
+      mapRef.current = null;
+    };
+  }, []);
 
   // Update tracked vehicles when new data comes in
   useEffect(() => {
-    setTrackedVehicles(prev => {
-      const updated = {...prev};
-      vehicles.forEach(vehicle => {
+    setTrackedVehicles((prev) => {
+      const updated = { ...prev };
+      vehicles.forEach((vehicle) => {
         updated[vehicle.id] = {
           ...vehicle,
-          lastUpdated: Date.now()
+          lastUpdated: Date.now(),
         };
       });
       return updated;
@@ -92,8 +92,8 @@ export default function MapView({ vehicles }: { vehicles: VehiclePosition[] }) {
   useEffect(() => {
     cleanupTimer.current = window.setInterval(() => {
       const now = Date.now();
-      setTrackedVehicles(prev => {
-        const updated = {...prev};
+      setTrackedVehicles((prev) => {
+        const updated = { ...prev };
         Object.entries(prev).forEach(([id, vehicle]) => {
           if (now - vehicle.lastUpdated > 30000) {
             delete updated[id];
@@ -119,15 +119,15 @@ export default function MapView({ vehicles }: { vehicles: VehiclePosition[] }) {
       const currentMarkers = markersRef.current;
       const newMarkers: Record<string, L.Marker> = {};
 
-      Object.values(trackedVehicles).forEach(vehicle => {
+      Object.values(trackedVehicles).forEach((vehicle) => {
         if (vehicle.lat && vehicle.long) {
           const existing = currentMarkers[vehicle.id];
-          
+
           if (existing) {
             const oldPos = existing.getLatLng();
             const newPos = [vehicle.lat, vehicle.long] as L.LatLngTuple;
             const distance = oldPos.distanceTo(newPos);
-            
+
             if (distance > 10) {
               existing.setLatLng(newPos);
             }
@@ -135,27 +135,28 @@ export default function MapView({ vehicles }: { vehicles: VehiclePosition[] }) {
           } else {
             const newPos = [vehicle.lat, vehicle.long] as L.LatLngTuple;
             const icon = createVehicleIcon(vehicle.vehicleType);
-            const marker = L.marker(newPos, { icon })
-              .bindTooltip(`
+            const marker = L.marker(newPos, { icon }).bindTooltip(
+              `
                 <div class="vehicle-tooltip">
                   <strong>${vehicle.route}</strong>
                   <span>${vehicle.vehicleType}</span>
                   <span>${vehicle.speed?.toFixed(1) ?? 'N/A'} m/s</span>
                 </div>
-              `, {
+              `,
+              {
                 direction: 'top',
                 offset: [0, -10],
                 permanent: false,
-                sticky: true
-              })
-              .bindPopup(`
+                sticky: true,
+              },
+            ).bindPopup(`
                 <div class="vehicle-popup">
                   <strong>Route ${vehicle.route}</strong>
                   <p>Type: ${vehicle.vehicleType}</p>
                   <p>Speed: ${vehicle.speed?.toFixed(1) ?? 'N/A'} m/s</p>
                 </div>
-              `)
-            
+              `);
+
             newMarkers[vehicle.id] = marker;
             marker.addTo(markerLayerRef.current);
           }
@@ -163,7 +164,7 @@ export default function MapView({ vehicles }: { vehicles: VehiclePosition[] }) {
       });
 
       // Cleanup only vehicles removed from tracked state
-      Object.keys(currentMarkers).forEach(id => {
+      Object.keys(currentMarkers).forEach((id) => {
         if (!trackedVehicles[id]) {
           markerLayerRef.current.removeLayer(currentMarkers[id]);
         }
@@ -173,9 +174,9 @@ export default function MapView({ vehicles }: { vehicles: VehiclePosition[] }) {
     }, 10);
 
     updateMarkers();
-    
+
     return () => updateMarkers.cancel();
   }, [trackedVehicles]);
 
-  return <div id="map" className={styles.mapContainer} />
+  return <div id="map" className={styles.mapContainer} />;
 }

@@ -16,14 +16,12 @@ export interface VehiclePosition {
   vehicleType: 'bus' | 'tram' | 'train' | 'metro' | 'ferry';
 }
 
-export const initRealtimeConnection = (
-  onMessage: (vehicle: VehiclePosition) => void
-) => {
+export const initRealtimeConnection = (onMessage: (vehicle: VehiclePosition) => void) => {
   const client = mqtt.connect(MQTT_URL, {
     rejectUnauthorized: false,
     protocolVersion: 5, // MQTT 5.0
     reconnectPeriod: 5000, // Auto-reconnect every 5s
-    connectTimeout: 3000
+    connectTimeout: 3000,
   });
 
   client.on('connect', () => {
@@ -40,7 +38,7 @@ export const initRealtimeConnection = (
     try {
       const data = JSON.parse(message.toString());
       const vp = data.VP;
-      
+
       if (vp && vp.lat && vp.long) {
         onMessage({
           id: `${vp.oper}_${vp.veh}`,
@@ -51,7 +49,7 @@ export const initRealtimeConnection = (
           speed: vp.spd,
           timestamp: new Date(vp.tst).getTime(),
           operator: vp.oper.toString(),
-          vehicleType: getVehicleTypeFromTopic(topic)
+          vehicleType: getVehicleTypeFromTopic(topic),
         });
       }
     } catch (error) {
@@ -67,5 +65,5 @@ export const initRealtimeConnection = (
 // Helper to extract vehicle type from MQTT topic
 const getVehicleTypeFromTopic = (topic: string): VehiclePosition['vehicleType'] => {
   const parts = topic.split('/');
-  return parts[6] as VehiclePosition['vehicleType'] || 'bus';
+  return (parts[6] as VehiclePosition['vehicleType']) || 'bus';
 };

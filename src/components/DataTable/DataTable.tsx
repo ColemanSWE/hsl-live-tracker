@@ -1,24 +1,24 @@
-import { memo } from 'react'
-import { VehiclePosition } from "../../services/hslApi";
-import SearchFilters from "../SearchFilters/SearchFilters"
-import Pagination from "../Pagination/Pagination"
-import styles from './DataTable.module.scss'
+import { memo } from 'react';
+import { VehiclePosition } from '../../services/hslApi';
+import SearchFilters from '../SearchFilters/SearchFilters';
+import Pagination from '../Pagination/Pagination';
+import styles from './DataTable.module.scss';
 
 interface DataTableProps {
-  vehicles: VehiclePosition[]
+  vehicles: VehiclePosition[];
   filters: {
-    routeFilter: string
-    vehicleType: string
-  }
+    routeFilter: string;
+    vehicleType: string;
+  };
   pagination: {
-    currentPage: number
-    itemsPerPage: number
-    totalItems: number
-    totalPages: number
-  }
-  onFilterChange: (filters: { routeFilter: string; vehicleType: string }) => void
-  onPageChange: (page: number) => void
-  onItemsPerPageChange: (size: number) => void
+    currentPage: number;
+    itemsPerPage: number;
+    totalItems: number;
+    totalPages: number;
+  };
+  onFilterChange: (filters: { routeFilter: string; vehicleType: string }) => void;
+  onPageChange: (page: number) => void;
+  onItemsPerPageChange: (size: number) => void;
 }
 
 function DataTable({
@@ -27,19 +27,17 @@ function DataTable({
   pagination,
   onFilterChange,
   onPageChange,
-  onItemsPerPageChange
+  onItemsPerPageChange,
 }: DataTableProps) {
   return (
     <div className={styles.tableContainer}>
       <div className={styles.tableHeader}>
-        <SearchFilters 
-          filters={filters} 
-          onFilterChange={onFilterChange} 
-        />
-        
+        <SearchFilters filters={filters} onFilterChange={onFilterChange} />
+
         <div className={styles.paginationInfo}>
-          Showing {vehicles.length ? (pagination.currentPage - 1) * pagination.itemsPerPage + 1 : 0}-
-          {(pagination.currentPage - 1) * pagination.itemsPerPage + vehicles.length} of {pagination.totalItems}
+          Showing {vehicles.length ? (pagination.currentPage - 1) * pagination.itemsPerPage + 1 : 0}
+          -{(pagination.currentPage - 1) * pagination.itemsPerPage + vehicles.length} of{' '}
+          {pagination.totalItems}
         </div>
       </div>
 
@@ -54,7 +52,7 @@ function DataTable({
           </tr>
         </thead>
         <tbody>
-          {vehicles.map(vehicle => (
+          {vehicles.map((vehicle) => (
             <tr key={vehicle.id}>
               <td>{vehicle.route}</td>
               <td>{vehicle.direction}</td>
@@ -75,7 +73,7 @@ function DataTable({
         onItemsPerPageChange={onItemsPerPageChange}
       />
     </div>
-  )
+  );
 }
 
-export default memo(DataTable)
+export default memo(DataTable);

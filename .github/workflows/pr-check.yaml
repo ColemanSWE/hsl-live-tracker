@@ -11,14 +11,14 @@ jobs:
     permissions:
       contents: read
       pull-requests: write
-    
+
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: 20
           cache: 'npm'
-      - run: git clean -ffdx  
+      - run: git clean -ffdx
       - run: npm ci
       - run: npm run build
       - run: npm run test:ci
@@ -31,4 +31,4 @@ jobs:
             const { job, conclusion } = context.payload.workflow_run || {};
             if (conclusion === 'failure') {
               core.setFailed('Tests must pass before merging');
-            } 
+            }

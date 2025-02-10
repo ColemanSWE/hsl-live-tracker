@@ -15,7 +15,7 @@ $font-scale: (
   h2: 2.4rem,
   h3: 1.8rem,
   body: 1.6rem,
-  small: 1.4rem
+  small: 1.4rem,
 );
 
 // Spacing
@@ -25,10 +25,10 @@ $spacing-scale: (
   2: $spacing-unit * 2,
   3: $spacing-unit * 3,
   4: $spacing-unit * 4,
-  5: $spacing-unit * 5
+  5: $spacing-unit * 5,
 );
 
 // Shadows
-$shadow-sm: 0 1px 3px rgba(0,0,0,0.12);
-$shadow-md: 0 4px 6px -1px rgba(0,0,0,0.1);
-$shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.1); 
+$shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.12);
+$shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+$shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);

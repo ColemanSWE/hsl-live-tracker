@@ -51,11 +51,11 @@
   border-radius: 6px;
   padding: 1rem;
   color: #ffffff;
-  
+
   p {
     margin: 0;
     font-size: map.get($font-scale, medium);
-    
+
     &:first-child {
       text-transform: capitalize;
       color: #007ac9;
@@ -95,15 +95,15 @@
   border-radius: 4px;
   padding: 1rem;
   color: black;
-  
+
   p {
     margin: 0;
     font-size: 14px;
-    
+
     &:first-child {
       text-transform: capitalize;
       font-weight: 500;
       margin-bottom: 4px;
     }
   }
-} 
+}
