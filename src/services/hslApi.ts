@@ -27,10 +27,8 @@ export const initRealtimeConnection = (
   });
 
   client.on('connect', () => {
-    console.log('MQTT connected');
     client.subscribe(TOPIC_PREFIX, { qos: 1 }, (err) => {
       if (err) console.error('Subscription error:', err);
-      else console.log('Subscribed to topics');
     });
   });
 
@@ -63,7 +61,6 @@ export const initRealtimeConnection = (
 
   return () => {
     client.end();
-    console.log('MQTT connection closed');
   };
 };
 
