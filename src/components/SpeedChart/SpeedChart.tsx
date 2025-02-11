@@ -66,7 +66,7 @@ export default function SpeedChart({ vehicles }: { vehicles: VehiclePosition[] }
     <div className={styles.chartContainer}>
       <h3>Average Speed by Vehicle Type</h3>
       <ResponsiveContainer width="100%" height={400}>
-        <BarChart data={chartData} margin={{ top: 20, right: 30, left: 40, bottom: 60 }}>
+        <BarChart data={chartData} margin={{ top: 20, right: 10, left: 0, bottom: 60 }}>
           <Tooltip content={<CustomTooltip />} />
           <XAxis
             dataKey="vehicleType"
@@ -87,7 +87,7 @@ export default function SpeedChart({ vehicles }: { vehicles: VehiclePosition[] }
               position: 'left',
               fill: '#fff',
               fontSize: 14,
-              dx: -35,
+              dx: 10,
             }}
           />
           <Bar dataKey="speed" isAnimationActive={false}>

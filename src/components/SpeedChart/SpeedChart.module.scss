@@ -107,3 +107,18 @@
     }
   }
 }
+
+@media (max-width: 768px) {
+  .recharts-yAxis .recharts-label {
+    transform: translate(-25px, 180px) rotate(-90deg) !important;
+    font-size: 12px !important;
+  }
+
+  .recharts-cartesian-axis-tick text {
+    font-size: 12px !important;
+  }
+
+  :global(.recharts-wrapper) {
+    margin-left: 20px;
+  }
+}
