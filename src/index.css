@@ -1,3 +1,9 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
 :root {
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
@@ -14,6 +20,12 @@
 }
 
 #root {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  padding: 20px;
+  box-sizing: border-box;
+
   @media (max-width: 768px) {
     padding: 0 !important;
   }
@@ -32,6 +44,7 @@ body {
   margin: 0;
   padding: 0;
   min-width: 320px;
+  overflow-x: hidden;
 }
 
 h1 {
@@ -56,11 +69,4 @@ button:hover {
 button:focus,
 button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
-}
-
-#root {
-  display: flex;
-  justify-content: center;
-  padding: 20px;
-  width: 100%;
 }

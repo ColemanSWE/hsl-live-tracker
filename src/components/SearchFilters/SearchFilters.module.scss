@@ -10,7 +10,8 @@
   width: 100%;
   box-sizing: border-box;
   overflow-x: auto;
-  min-width: min-content;
+  min-width: max-content;
+  flex-wrap: wrap;
 
   input,
   select,
@@ -86,5 +87,13 @@
     button {
       margin-top: map.get($spacing-scale, 1);
     }
+  }
+}
+
+// Add this media query to keep horizontal scroll only on mobile
+@media (max-width: 768px) {
+  .filtersContainer {
+    overflow-x: auto;
+    flex-wrap: nowrap;
   }
 }
