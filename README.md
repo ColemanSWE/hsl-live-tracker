@@ -37,3 +37,8 @@
 4. **Pagination architecture**: Implement a hybrid approach combining frontend pagination with periodic server-side data refreshes.
 
 5. **Enhanced testing**: Add end-to-end testing for map interactions and MQTT connection stability.
+
+## Deployment
+
+The application is automatically deployed via GitHub Pages at:  
+[https://colemanswe.github.io/hsl-realtime-tracker](https://colemanswe.github.io/hsl-realtime-tracker)
