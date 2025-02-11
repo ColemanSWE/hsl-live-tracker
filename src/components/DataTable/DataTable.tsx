@@ -33,12 +33,6 @@ function DataTable({
     <div className={styles.tableContainer}>
       <div className={styles.tableHeader}>
         <SearchFilters filters={filters} onFilterChange={onFilterChange} />
-
-        <div className={styles.paginationInfo}>
-          Showing {vehicles.length ? (pagination.currentPage - 1) * pagination.itemsPerPage + 1 : 0}
-          -{(pagination.currentPage - 1) * pagination.itemsPerPage + vehicles.length} of{' '}
-          {pagination.totalItems}
-        </div>
       </div>
 
       <div className={styles.tableScrollContainer}>
